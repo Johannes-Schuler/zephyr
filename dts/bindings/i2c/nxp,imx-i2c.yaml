@@ -1,0 +1,15 @@
+description: i.MX 8M Mini I2C node
+
+compatible: "nxp,imx-i2c"
+
+include: ["i2c-controller.yaml", "pinctrl-device.yaml"]
+
+properties:
+  reg:
+    required: true
+
+  interrupts:
+    required: true
+
+  pinctrl-0:
+    required: true

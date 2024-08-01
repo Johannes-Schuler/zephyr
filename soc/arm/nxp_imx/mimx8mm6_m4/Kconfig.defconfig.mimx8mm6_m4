@@ -17,4 +17,9 @@ config IPM_IMX
 	default y
 	depends on IPM
 
+config I2C_MCUX_IMX
+	bool
+	default y
+	depends on I2C && SOC_MIMX8MM6
+
 endif # SOC_MIMX8MM6

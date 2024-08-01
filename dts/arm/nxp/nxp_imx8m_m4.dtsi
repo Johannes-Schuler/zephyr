@@ -136,6 +136,46 @@
 			#clock-cells = <3>;
 		};
 
+		i2c1: i2c@30a20000  {
+			compatible = "nxp,imx-i2c";
+			reg =<0x30a20000  0x10000>;
+			interrupts = <35 3>;
+			clocks = <&ccm IMX_CCM_I2C1_CLK	0x6c 24>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "disabled";
+		};
+
+		i2c2: i2c@30a30000  {
+			compatible = "nxp,imx-i2c";
+			reg =<0x30a30000  0x10000>;
+			interrupts = <36 3>;
+			clocks = <&ccm IMX_CCM_I2C2_CLK	0x6c 24>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "disabled";
+		};
+
+		i2c3: i2c@30a40000 {
+			compatible = "nxp,imx-i2c";
+			reg =<0x30a40000 0x10000>;
+			interrupts = <37 3>;
+			clocks = <&ccm IMX_CCM_I2C3_CLK	0x6c 24>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "disabled";
+		};
+
+		i2c4: i2c@30a50000 {
+			compatible = "nxp,imx-i2c";
+			reg =<0x30a50000 0x10000>;
+			interrupts = <38 3>;
+			clocks = <&ccm IMX_CCM_I2C4_CLK	0x6c 24>;
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "disabled";
+		};
+
 		uart1: uart@30860000 {
 			compatible = "nxp,imx-iuart";
 			reg = <0x30860000 0x10000>;
