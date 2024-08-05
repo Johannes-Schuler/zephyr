@@ -20,6 +20,22 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(clock_control);
 
+#ifdef CONFIG_I2C_MCUX
+static const clock_root_control_t i2c_clk_root[] = {
+	kCLOCK_RootI2c1,
+	kCLOCK_RootI2c2,
+	kCLOCK_RootI2c3,
+	kCLOCK_RootI2c4,
+};
+
+static const clock_ip_name_t i2c_clocks[] = {
+	kCLOCK_I2c1,
+	kCLOCK_I2c2,
+	kCLOCK_I2c3,
+	kCLOCK_I2c4,
+};
+#endif
+
 #ifdef CONFIG_SPI_MCUX_LPSPI
 static const clock_name_t lpspi_clocks[] = {
 	kCLOCK_Usb1PllPfd1Clk,
@@ -79,6 +95,15 @@ static int mcux_ccm_on(const struct device *dev,
 	uint32_t instance = clock_name & IMX_CCM_INSTANCE_MASK;
 
 	switch (clock_name) {
+#ifdef CONFIG_I2C_MCUX
+	case IMX_CCM_I2C1_CLK:
+	case IMX_CCM_I2C2_CLK:
+	case IMX_CCM_I2C3_CLK:
+		CLOCK_EnableClock(i2c_clocks[instance]);
+		return 0;
+	case IMX_CCM_I2C4_CLK:
+#endif
+
 #ifdef CONFIG_UART_MCUX_IUART
 	case IMX_CCM_UART1_CLK:
 	case IMX_CCM_UART2_CLK:
@@ -130,6 +155,15 @@ static int mcux_ccm_off(const struct device *dev,
 	uint32_t instance = clock_name & IMX_CCM_INSTANCE_MASK;
 
 	switch (clock_name) {
+#ifdef CONFIG_I2C_MCUX
+	case IMX_CCM_I2C1_CLK:
+	case IMX_CCM_I2C2_CLK:
+	case IMX_CCM_I2C3_CLK:
+		CLOCK_DisableClock(i2c_clocks[instance]);
+		return 0;
+	case IMX_CCM_I2C4_CLK:
+#endif
+
 #ifdef CONFIG_UART_MCUX_IUART
 	case IMX_CCM_UART1_CLK:
 	case IMX_CCM_UART2_CLK:
@@ -256,6 +290,28 @@ static int mcux_ccm_get_subsys_rate(const struct device *dev,
 	case IMX_CCM_ENET_PLL:
 		*rate = CLOCK_GetPllFreq(kCLOCK_PllEnet);
 		break;
+#endif
+
+#ifdef CONFIG_I2C_MCUX
+	case IMX_CCM_I2C1_CLK:
+	case IMX_CCM_I2C2_CLK:
+	case IMX_CCM_I2C3_CLK:
+	{
+		uint32_t instance = clock_name & IMX_CCM_INSTANCE_MASK;
+		clock_root_control_t clk_root = i2c_clk_root[instance];
+		uint32_t i2c_mux = CLOCK_GetRootMux(clk_root);
+
+		if (i2c_mux == 0) {
+			*rate = MHZ(24);
+		} else if (i2c_mux == 1) {
+			*rate = CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) /
+				(CLOCK_GetRootPreDivider(clk_root)) /
+				(CLOCK_GetRootPostDivider(clk_root)) /
+				10;
+		}
+
+	} break;
+	case IMX_CCM_I2C4_CLK:
 #endif
 
 #ifdef CONFIG_UART_MCUX_IUART
