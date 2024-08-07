@@ -176,12 +176,20 @@ void thread_analyzer_run(thread_analyzer_cb cb, unsigned int cpu)
 		if (IS_ENABLED(CONFIG_THREAD_ANALYZER_AUTO_SEPARATE_CORES))
 			k_thread_foreach_unlocked_filter_by_cpu(cpu, thread_analyze_cb, &ud);
 		else
+<<<<<<< HEAD
 			k_thread_foreach_unlocked(thread_analyze_cb, cb);
+=======
+			k_thread_foreach_unlocked(thread_analyze_cb, &ud);
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	} else {
 		if (IS_ENABLED(CONFIG_THREAD_ANALYZER_AUTO_SEPARATE_CORES))
 			k_thread_foreach_filter_by_cpu(cpu, thread_analyze_cb, &ud);
 		else
+<<<<<<< HEAD
 			k_thread_foreach(thread_analyze_cb, cb);
+=======
+			k_thread_foreach(thread_analyze_cb, &ud);
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	}
 
 	if (IS_ENABLED(CONFIG_THREAD_ANALYZER_ISR_STACK_USAGE)) {
@@ -208,7 +216,11 @@ void thread_analyzer_print(unsigned int cpu)
 void thread_analyzer_auto(void *a, void *b, void *c)
 {
 	unsigned int cpu = IS_ENABLED(CONFIG_THREAD_ANALYZER_AUTO_SEPARATE_CORES) ?
+<<<<<<< HEAD
 		(unsigned int) a : 0;
+=======
+		(unsigned int)(uintptr_t) a : 0;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	for (;;) {
 		thread_analyzer_print(cpu);

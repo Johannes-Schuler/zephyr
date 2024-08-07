@@ -4,4 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+<<<<<<< HEAD
+=======
+#include <zephyr/linker/iterable_sections.h>
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 ITERABLE_SECTION_RAM(wifi_nm_instance, Z_LINK_ITERABLE_SUBALIGN)

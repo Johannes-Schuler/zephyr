@@ -78,7 +78,11 @@ Numeric flash area ID is obtained by passing DTS node label to
 :c:macro:`FIXED_PARTITION_ID()`; for example to obtain ID number
 for ``slot0_partition``, user would invoke ``FIXED_PARTITION_ID(slot0_partition)``.
 
+<<<<<<< HEAD
 All :c:macro:`FIXED_PARTITION_` macros take DTS node labels as partition
+=======
+All :code:`FIXED_PARTITION_*` macros take DTS node labels as partition
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 identifiers.
 
 Users do not have to obtain a :c:struct:`flash_area` object pointer

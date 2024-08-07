@@ -26,6 +26,10 @@ config USBC_TCPC_SHELL
 	  Example functions are printing vbus, chip information and dumping registers.
 
 source "drivers/usb_c/tcpc/Kconfig.tcpc_stm32"
+<<<<<<< HEAD
+=======
+source "drivers/usb_c/tcpc/Kconfig.tcpc_numaker"
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 module = USBC
 module-str = usbc

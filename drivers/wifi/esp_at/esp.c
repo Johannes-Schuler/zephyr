@@ -288,12 +288,20 @@ static int esp_pull_quoted(char **str, char *str_end, char **unquoted)
 static int esp_pull(char **str, char *str_end)
 {
 	while (*str < str_end) {
+<<<<<<< HEAD
 		if (**str == ',' || **str == '\r' || **str == '\n') {
+=======
+		if (**str == ',' || **str == ':' || **str == '\r' || **str == '\n') {
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 			char last_c = **str;
 
 			**str = '\0';
 
+<<<<<<< HEAD
 			if (last_c == ',') {
+=======
+			if (last_c == ',' || last_c == ':') {
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 				(*str)++;
 			}
 
@@ -313,6 +321,29 @@ static int esp_pull_raw(char **str, char *str_end, char **raw)
 	return esp_pull(str, str_end);
 }
 
+<<<<<<< HEAD
+=======
+static int esp_pull_long(char **str, char *str_end, long *value)
+{
+	char *str_begin = *str;
+	int err;
+	char *endptr;
+
+	err = esp_pull(str, str_end);
+	if (err) {
+		return err;
+	}
+
+	*value = strtol(str_begin, &endptr, 10);
+	if (endptr == str_begin) {
+		LOG_ERR("endptr == str_begin");
+		return -EBADMSG;
+	}
+
+	return 0;
+}
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 /* +CWLAP:(sec,ssid,rssi,channel) */
 /* with: CONFIG_WIFI_ESP_AT_SCAN_MAC_ADDRESS: +CWLAP:<ecn>,<ssid>,<rssi>,<mac>,<ch>*/
 MODEM_CMD_DIRECT_DEFINE(on_cmd_cwlap)
@@ -326,7 +357,11 @@ MODEM_CMD_DIRECT_DEFINE(on_cmd_cwlap)
 	char *ssid;
 	char *mac;
 	char *channel;
+<<<<<<< HEAD
 	char *rssi;
+=======
+	long rssi;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	long ecn_id;
 	int err;
 
@@ -354,7 +389,11 @@ MODEM_CMD_DIRECT_DEFINE(on_cmd_cwlap)
 		return err;
 	}
 
+<<<<<<< HEAD
 	err = esp_pull_raw(&str, str_end, &rssi);
+=======
+	err = esp_pull_long(&str, str_end, &rssi);
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	if (err) {
 		return err;
 	}
@@ -366,7 +405,11 @@ MODEM_CMD_DIRECT_DEFINE(on_cmd_cwlap)
 	res.ssid_length = MIN(sizeof(res.ssid), strlen(ssid));
 	memcpy(res.ssid, ssid, res.ssid_length);
 
+<<<<<<< HEAD
 	res.rssi = strtol(rssi, NULL, 10);
+=======
+	res.rssi = rssi;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	if (IS_ENABLED(CONFIG_WIFI_ESP_AT_SCAN_MAC_ADDRESS)) {
 		err = esp_pull_quoted(&str, str_end, &mac);
@@ -736,6 +779,7 @@ socket_unref:
  * Other:        "+IPD,<id>,<len>:<data>"
  */
 #define MIN_IPD_LEN (sizeof("+IPD,I,0E") - 1)
+<<<<<<< HEAD
 #define MAX_IPD_LEN (sizeof("+IPD,I,4294967295E") - 1)
 
 static int cmd_ipd_parse_hdr(struct net_buf *buf, uint16_t len,
@@ -746,6 +790,22 @@ static int cmd_ipd_parse_hdr(struct net_buf *buf, uint16_t len,
 	char *endptr, ipd_buf[MAX_IPD_LEN + 1];
 	size_t frags_len;
 	size_t match_len;
+=======
+#define MAX_IPD_LEN (sizeof("+IPD,I,4294967295,\"\",65535E") - 1) + NET_IPV4_ADDR_LEN
+
+static int cmd_ipd_parse_hdr(struct esp_data *dev,
+			     struct esp_socket **sock,
+			     struct net_buf *buf, uint16_t len,
+			     int *data_offset, long *data_len)
+{
+	char ipd_buf[MAX_IPD_LEN + 1];
+	char *str;
+	char *str_end;
+	long link_id;
+	size_t frags_len;
+	size_t match_len;
+	int err;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	frags_len = net_buf_frags_len(buf);
 
@@ -763,6 +823,7 @@ static int cmd_ipd_parse_hdr(struct net_buf *buf, uint16_t len,
 		return -EBADMSG;
 	}
 
+<<<<<<< HEAD
 	*link_id = ipd_buf[len + 1] - '0';
 
 	*data_len = strtol(&ipd_buf[len + 3], &endptr, 10);
@@ -799,6 +860,75 @@ static int cmd_ipd_check_hdr_end(struct esp_socket *sock, char actual)
 	}
 
 	return 0;
+=======
+	str = &ipd_buf[len + 1];
+	str_end = &ipd_buf[match_len];
+
+	err = esp_pull_long(&str, str_end, &link_id);
+	if (err) {
+		if (err == -EAGAIN && match_len >= MAX_IPD_LEN) {
+			LOG_ERR("Failed to pull %s", "link_id");
+			return -EBADMSG;
+		}
+
+		return err;
+	}
+
+	err = esp_pull_long(&str, str_end, data_len);
+	if (err) {
+		if (err == -EAGAIN && match_len >= MAX_IPD_LEN) {
+			LOG_ERR("Failed to pull %s", "data_len");
+			return -EBADMSG;
+		}
+
+		return err;
+	}
+
+	*sock = esp_socket_ref_from_link_id(dev, link_id);
+	if (!sock) {
+		LOG_ERR("No socket for link %ld", link_id);
+		return str - ipd_buf;
+	}
+
+	if (!ESP_PROTO_PASSIVE(esp_socket_ip_proto(*sock)) &&
+	    IS_ENABLED(CONFIG_WIFI_ESP_AT_CIPDINFO_USE)) {
+		struct sockaddr_in *recv_addr =
+			(struct sockaddr_in *) &(*sock)->context->remote;
+		char *remote_ip;
+		long port;
+
+		err = esp_pull_quoted(&str, str_end, &remote_ip);
+		if (err) {
+			LOG_ERR("Failed to pull remote_ip");
+			goto socket_unref;
+		}
+
+		err = esp_pull_long(&str, str_end, &port);
+		if (err) {
+			LOG_ERR("Failed to pull port");
+			goto socket_unref;
+		}
+
+		err = net_addr_pton(AF_INET, remote_ip, &recv_addr->sin_addr);
+		if (err) {
+			LOG_ERR("Invalid IP address");
+			err = -EBADMSG;
+			goto socket_unref;
+		}
+
+		recv_addr->sin_family = AF_INET;
+		recv_addr->sin_port = htons(port);
+	}
+
+	*data_offset = (str - ipd_buf);
+
+	return 0;
+
+socket_unref:
+	esp_socket_unref(*sock);
+
+	return err;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 }
 
 MODEM_CMD_DIRECT_DEFINE(on_cmd_ipd)
@@ -806,6 +936,7 @@ MODEM_CMD_DIRECT_DEFINE(on_cmd_ipd)
 	struct esp_data *dev = CONTAINER_OF(data, struct esp_data,
 					    cmd_handler_data);
 	struct esp_socket *sock;
+<<<<<<< HEAD
 	int data_offset, data_len;
 	uint8_t link_id;
 	char cmd_end;
@@ -814,6 +945,15 @@ MODEM_CMD_DIRECT_DEFINE(on_cmd_ipd)
 
 	err = cmd_ipd_parse_hdr(data->rx_buf, len, &link_id, &data_offset,
 				&data_len, &cmd_end);
+=======
+	int data_offset;
+	long data_len;
+	int err;
+	int ret;
+
+	err = cmd_ipd_parse_hdr(dev, &sock, data->rx_buf, len,
+				&data_offset, &data_len);
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	if (err) {
 		if (err == -EAGAIN) {
 			return -EAGAIN;
@@ -822,6 +962,7 @@ MODEM_CMD_DIRECT_DEFINE(on_cmd_ipd)
 		return len;
 	}
 
+<<<<<<< HEAD
 	sock = esp_socket_ref_from_link_id(dev, link_id);
 	if (!sock) {
 		LOG_ERR("No socket for link %d", link_id);
@@ -834,6 +975,8 @@ MODEM_CMD_DIRECT_DEFINE(on_cmd_ipd)
 		goto socket_unref;
 	}
 
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	/*
 	 * When using passive TCP, the data itself is not included in the +IPD
 	 * command but must be polled with AT+CIPRECVDATA.

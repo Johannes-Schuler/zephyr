@@ -51,6 +51,15 @@ int main(void)
 	printk("Maximum TX channels: %d\n", mbox_max_channels_get_dt(&tx_channel));
 
 	while (1) {
+<<<<<<< HEAD
+=======
+#if defined(CONFIG_MULTITHREADING)
+		k_sleep(K_MSEC(3000));
+#else
+		k_busy_wait(3000000);
+#endif
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		printk("Ping (on channel %d)\n", tx_channel.channel_id);
 
 		ret = mbox_send_dt(&tx_channel, NULL);
@@ -58,10 +67,15 @@ int main(void)
 			printk("Could not send (%d)\n", ret);
 			return 0;
 		}
+<<<<<<< HEAD
 
 		k_sleep(K_MSEC(3000));
 	}
 #endif /* CONFIG_TX_ENABLED */
 
+=======
+	}
+#endif /* CONFIG_TX_ENABLED */
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	return 0;
 }

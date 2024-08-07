@@ -45,6 +45,10 @@ static struct bt_bap_lc3_preset unicast_preset_16_2_1 = BT_BAP_LC3_UNICAST_PRESE
 	BT_AUDIO_LOCATION_MONO_AUDIO, BT_AUDIO_CONTEXT_TYPE_UNSPECIFIED);
 static struct bt_bap_unicast_group *unicast_group;
 uint64_t total_rx_iso_packet_count; /* This value is exposed to test code */
+<<<<<<< HEAD
+=======
+uint64_t total_unicast_tx_iso_packet_count; /* This value is exposed to test code */
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 /** Struct to contain information for a specific peer (CAP) device */
 struct peer_config {
@@ -74,6 +78,24 @@ static K_SEM_DEFINE(sem_state_change, 0, 1);
 static K_SEM_DEFINE(sem_mtu_exchanged, 0, 1);
 static K_SEM_DEFINE(sem_security_changed, 0, 1);
 
+<<<<<<< HEAD
+=======
+static bool is_tx_stream(struct bt_bap_stream *stream)
+{
+	struct bt_bap_ep_info ep_info;
+	int err;
+
+	err = bt_bap_ep_get_info(stream->ep, &ep_info);
+	if (err != 0) {
+		LOG_ERR("Failed to get ep info: %d", err);
+
+		return false;
+	}
+
+	return ep_info.dir == BT_AUDIO_DIR_SINK;
+}
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 static void unicast_stream_configured_cb(struct bt_bap_stream *stream,
 					 const struct bt_audio_codec_qos_pref *pref)
 {
@@ -103,6 +125,21 @@ static void unicast_stream_started_cb(struct bt_bap_stream *stream)
 {
 	LOG_INF("Started stream %p", stream);
 	total_rx_iso_packet_count = 0U;
+<<<<<<< HEAD
+=======
+	total_unicast_tx_iso_packet_count = 0U;
+
+	if (is_tx_stream(stream)) {
+		struct bt_cap_stream *cap_stream =
+			CONTAINER_OF(stream, struct bt_cap_stream, bap_stream);
+		int err;
+
+		err = cap_initiator_tx_register_stream(cap_stream);
+		if (err != 0) {
+			LOG_ERR("Failed to register %p for TX: %d", stream, err);
+		}
+	}
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 }
 
 static void unicast_stream_metadata_updated_cb(struct bt_bap_stream *stream)
@@ -118,6 +155,20 @@ static void unicast_stream_disabled_cb(struct bt_bap_stream *stream)
 static void unicast_stream_stopped_cb(struct bt_bap_stream *stream, uint8_t reason)
 {
 	LOG_INF("Stopped stream %p with reason 0x%02X", stream, reason);
+<<<<<<< HEAD
+=======
+
+	if (is_tx_stream(stream)) {
+		struct bt_cap_stream *cap_stream =
+			CONTAINER_OF(stream, struct bt_cap_stream, bap_stream);
+		int err;
+
+		err = cap_initiator_tx_unregister_stream(cap_stream);
+		if (err != 0) {
+			LOG_ERR("Failed to unregister %p for TX: %d", stream, err);
+		}
+	}
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 }
 
 static void unicast_stream_released_cb(struct bt_bap_stream *stream)
@@ -146,6 +197,20 @@ static void unicast_stream_recv_cb(struct bt_bap_stream *stream,
 	total_rx_iso_packet_count++;
 }
 
+<<<<<<< HEAD
+=======
+static void unicast_stream_sent_cb(struct bt_bap_stream *stream)
+{
+	/* Triggered every time we have sent an HCI data packet to the controller */
+
+	if ((total_unicast_tx_iso_packet_count % 100U) == 0U) {
+		LOG_INF("Sent %llu HCI ISO data packets", total_unicast_tx_iso_packet_count);
+	}
+
+	total_unicast_tx_iso_packet_count++;
+}
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 static struct bt_bap_stream_ops unicast_stream_ops = {
 	.configured = unicast_stream_configured_cb,
 	.qos_set = unicast_stream_qos_set_cb,
@@ -156,6 +221,7 @@ static struct bt_bap_stream_ops unicast_stream_ops = {
 	.stopped = unicast_stream_stopped_cb,
 	.released = unicast_stream_released_cb,
 	.recv = unicast_stream_recv_cb,
+<<<<<<< HEAD
 };
 
 static void tx_thread_func(void *arg1, void *arg2, void *arg3)
@@ -204,6 +270,11 @@ static void tx_thread_func(void *arg1, void *arg2, void *arg3)
 	}
 }
 
+=======
+	.sent = unicast_stream_sent_cb,
+};
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 static bool log_codec_cb(struct bt_data *data, void *user_data)
 {
 	const char *str = (const char *)user_data;
@@ -737,6 +808,7 @@ static int init_cap_initiator(void)
 	k_sem_init(&peer.sink_stream_sem, 0, 1);
 
 	if (IS_ENABLED(CONFIG_BT_BAP_UNICAST_CLIENT_ASE_SNK)) {
+<<<<<<< HEAD
 		static bool thread_started;
 
 		if (!thread_started) {
@@ -751,6 +823,9 @@ static int init_cap_initiator(void)
 			k_thread_name_set(&tx_thread, "TX thread");
 			thread_started = true;
 		}
+=======
+		cap_initiator_tx_init();
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	}
 
 	return 0;

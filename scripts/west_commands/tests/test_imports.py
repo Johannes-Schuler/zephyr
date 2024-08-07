@@ -37,6 +37,10 @@ def test_runner_imports():
                     'nrfutil',
                     'nxp_s32dbg',
                     'openocd',
+<<<<<<< HEAD
+=======
+                    'probe-rs',
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
                     'pyocd',
                     'qemu',
                     'renode',

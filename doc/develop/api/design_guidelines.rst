@@ -31,7 +31,11 @@ specifying the signature of a callback:
 An exception to providing ``user_data`` as the last parameter may be
 allowed when the callback itself was provided through a structure that
 will be embedded in another structure.  An example of such a case is
+<<<<<<< HEAD
 :c:type:`gpio_callback`, normally defined within a data structure
+=======
+:c:struct:`gpio_callback`, normally defined within a data structure
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 specific to the code that also defines the callback function.  In those
 cases further context can accessed by the callback indirectly by
 :c:macro:`CONTAINER_OF`.
@@ -45,7 +49,11 @@ Examples
     void handle_timeout(struct k_timer *timer)
     { ... }
 
+<<<<<<< HEAD
   The assumption here, as with :c:type:`gpio_callback`, is that the
+=======
+  The assumption here, as with :c:struct:`gpio_callback`, is that the
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
   timer is embedded in a structure reachable from
   :c:macro:`CONTAINER_OF` that can provide additional context to the
   callback.
@@ -62,7 +70,11 @@ Examples
   This provides more complete useful information, including which
   counter channel timed-out and the counter value at which the timeout
   occurred, as well as user context which may or may not be the
+<<<<<<< HEAD
   :c:type:`counter_alarm_cfg` used to register the callback, depending
+=======
+  :c:struct:`counter_alarm_cfg` used to register the callback, depending
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
   on user needs.
 
 Conditional Data and APIs

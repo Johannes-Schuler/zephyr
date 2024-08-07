@@ -133,7 +133,11 @@ Thread Local Storage
 
 Picolibc uses Thread Local Storage (TLS) (where supported) for data
 which is supposed to remain local to each thread, like
+<<<<<<< HEAD
 :c:var:`errno`. This means that TLS support is enabled when using
+=======
+:c:macro:`errno`. This means that TLS support is enabled when using
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 Picolibc. As all TLS variables are allocated out of the thread stack
 area, this can affect stack size requirements by a few bytes.
 

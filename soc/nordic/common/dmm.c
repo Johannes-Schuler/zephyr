@@ -295,5 +295,8 @@ int dmm_init(void)
 
 	return 0;
 }
+<<<<<<< HEAD
 
 SYS_INIT(dmm_init, POST_KERNEL, 0);
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911

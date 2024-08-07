@@ -2094,7 +2094,11 @@ Libraries / Subsystems
     :kconfig:option:`CONFIG_MCUMGR_MGMT_HANDLER_USER_DATA` is enabled.
 
   * Added optional ``force`` parameter to os mgmt reset command, this can be checked in the
+<<<<<<< HEAD
     :c:enum:`MGMT_EVT_OP_OS_MGMT_RESET` notification callback whose data structure is
+=======
+    :c:enumerator:`MGMT_EVT_OP_OS_MGMT_RESET` notification callback whose data structure is
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
     :c:struct:`os_mgmt_reset_data`.
 
   * Added configurable number of SMP encoding levels via

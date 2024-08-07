@@ -299,17 +299,23 @@ int main(void)
 
 	printk("SensorTile.box Pro sensor test\n");
 
+<<<<<<< HEAD
 	const struct device *const hts221 = DEVICE_DT_GET_ONE(st_hts221);
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	const struct device *const lps22df = DEVICE_DT_GET_ONE(st_lps22df);
 	const struct device *const lsm6dsv16x = DEVICE_DT_GET_ONE(st_lsm6dsv16x);
 	const struct device *const lis2mdl = DEVICE_DT_GET_ONE(st_lis2mdl);
 	const struct device *const lis2du12 = DEVICE_DT_GET_ONE(st_lis2du12);
 	const struct device *const stts22h = DEVICE_DT_GET_ONE(st_stts22h);
 
+<<<<<<< HEAD
 	if (!device_is_ready(hts221)) {
 		printk("%s: device not ready.\n", hts221->name);
 		return 0;
 	}
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	if (!device_is_ready(lps22df)) {
 		printk("%s: device not ready.\n", lps22df->name);
 		return 0;
@@ -338,7 +344,10 @@ int main(void)
 	lsm6dsv16x_config(lsm6dsv16x);
 
 	while (1) {
+<<<<<<< HEAD
 		struct sensor_value hts221_hum, hts221_temp;
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		struct sensor_value lps22df_press, lps22df_temp;
 		struct sensor_value lsm6dsv16x_accel[3], lsm6dsv16x_gyro[3];
 		struct sensor_value lis2mdl_magn[3];
@@ -346,12 +355,15 @@ int main(void)
 		struct sensor_value lis2du12_accel[3];
 		struct sensor_value stts22h_temp;
 
+<<<<<<< HEAD
 		/* handle HTS221 sensor */
 		if (sensor_sample_fetch(hts221) < 0) {
 			printf("HTS221 Sensor sample update error\n");
 			return 0;
 		}
 
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #ifndef CONFIG_LSM6DSV16X_TRIGGER
 		if (sensor_sample_fetch(lsm6dsv16x) < 0) {
 			printf("LSM6DSV16X Sensor sample update error\n");
@@ -387,8 +399,11 @@ int main(void)
 		}
 #endif
 
+<<<<<<< HEAD
 		sensor_channel_get(hts221, SENSOR_CHAN_HUMIDITY, &hts221_hum);
 		sensor_channel_get(hts221, SENSOR_CHAN_AMBIENT_TEMP, &hts221_temp);
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		sensor_channel_get(lps22df, SENSOR_CHAN_AMBIENT_TEMP, &lps22df_temp);
 		sensor_channel_get(lps22df, SENSOR_CHAN_PRESS, &lps22df_press);
 		sensor_channel_get(lsm6dsv16x, SENSOR_CHAN_ACCEL_XYZ, lsm6dsv16x_accel);
@@ -405,6 +420,7 @@ int main(void)
 
 		printf("SensorTile.box dashboard\n\n");
 
+<<<<<<< HEAD
 		/* HTS221 temperature */
 		printf("HTS221: Temperature: %.1f C\n",
 		       sensor_value_to_double(&hts221_temp));
@@ -413,6 +429,8 @@ int main(void)
 		printf("HTS221: Relative Humidity: %.1f%%\n",
 		       sensor_value_to_double(&hts221_hum));
 
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		/* temperature */
 		printf("LPS22DF: Temperature: %.1f C\n",
 		       sensor_value_to_double(&lps22df_temp));

@@ -15,10 +15,17 @@
 #define BOND_NOTIFY_REPEAT_TO	K_MSEC(CONFIG_IPC_SERVICE_ICMSG_BOND_NOTIFY_REPEAT_TO_MS)
 #define SHMEM_ACCESS_TO		K_MSEC(CONFIG_IPC_SERVICE_ICMSG_SHMEM_ACCESS_TO_MS)
 
+<<<<<<< HEAD
 
 static const uint8_t magic[] = {0x45, 0x6d, 0x31, 0x6c, 0x31, 0x4b,
 				0x30, 0x72, 0x6e, 0x33, 0x6c, 0x69, 0x34};
 
+=======
+static const uint8_t magic[] = {0x45, 0x6d, 0x31, 0x6c, 0x31, 0x4b,
+				0x30, 0x72, 0x6e, 0x33, 0x6c, 0x69, 0x34};
+
+#ifdef CONFIG_MULTITHREADING
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #if defined(CONFIG_IPC_SERVICE_BACKEND_ICMSG_WQ_ENABLE)
 static K_THREAD_STACK_DEFINE(icmsg_stack, CONFIG_IPC_SERVICE_BACKEND_ICMSG_WQ_STACK_SIZE);
 static struct k_work_q icmsg_workq;
@@ -26,6 +33,13 @@ static struct k_work_q *const workq = &icmsg_workq;
 #else
 static struct k_work_q *const workq = &k_sys_work_q;
 #endif
+<<<<<<< HEAD
+=======
+static void mbox_callback_process(struct k_work *item);
+#else
+static void mbox_callback_process(struct icmsg_data_t *dev_data);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 static int mbox_deinit(const struct icmsg_config_t *conf,
 		       struct icmsg_data_t *dev_data)
@@ -42,12 +56,28 @@ static int mbox_deinit(const struct icmsg_config_t *conf,
 		return err;
 	}
 
+<<<<<<< HEAD
 	(void)k_work_cancel(&dev_data->mbox_work);
 	(void)k_work_cancel_delayable(&dev_data->notify_work);
+=======
+#ifdef CONFIG_MULTITHREADING
+	(void)k_work_cancel(&dev_data->mbox_work);
+	(void)k_work_cancel_delayable(&dev_data->notify_work);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	return 0;
 }
 
+<<<<<<< HEAD
+=======
+static bool is_endpoint_ready(struct icmsg_data_t *dev_data)
+{
+	return atomic_get(&dev_data->state) == ICMSG_STATE_READY;
+}
+
+#ifdef CONFIG_MULTITHREADING
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 static void notify_process(struct k_work *item)
 {
 	struct k_work_delayable *dwork = k_work_delayable_from_work(item);
@@ -66,6 +96,7 @@ static void notify_process(struct k_work *item)
 		(void)ret;
 	}
 }
+<<<<<<< HEAD
 
 static bool is_endpoint_ready(struct icmsg_data_t *dev_data)
 {
@@ -75,28 +106,70 @@ static bool is_endpoint_ready(struct icmsg_data_t *dev_data)
 static int reserve_tx_buffer_if_unused(struct icmsg_data_t *dev_data)
 {
 #ifdef CONFIG_IPC_SERVICE_ICMSG_SHMEM_ACCESS_SYNC
+=======
+#else
+static void notify_process(struct icmsg_data_t *dev_data)
+{
+	(void)mbox_send_dt(&dev_data->cfg->mbox_tx, NULL);
+#if defined(CONFIG_SYS_CLOCK_EXISTS)
+	int64_t start = k_uptime_get();
+#endif
+
+	while (false == is_endpoint_ready(dev_data)) {
+		mbox_callback_process(dev_data);
+
+#if defined(CONFIG_SYS_CLOCK_EXISTS)
+		if ((k_uptime_get() - start) > CONFIG_IPC_SERVICE_ICMSG_BOND_NOTIFY_REPEAT_TO_MS) {
+#endif
+			(void)mbox_send_dt(&dev_data->cfg->mbox_tx, NULL);
+#if defined(CONFIG_SYS_CLOCK_EXISTS)
+			start = k_uptime_get();
+		};
+#endif
+	}
+}
+#endif
+
+#ifdef CONFIG_IPC_SERVICE_ICMSG_SHMEM_ACCESS_SYNC
+static int reserve_tx_buffer_if_unused(struct icmsg_data_t *dev_data)
+{
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	int ret = k_mutex_lock(&dev_data->tx_lock, SHMEM_ACCESS_TO);
 
 	if (ret < 0) {
 		return ret;
 	}
+<<<<<<< HEAD
 #endif
+=======
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	return 0;
 }
 
 static int release_tx_buffer(struct icmsg_data_t *dev_data)
 {
+<<<<<<< HEAD
 #ifdef CONFIG_IPC_SERVICE_ICMSG_SHMEM_ACCESS_SYNC
 	return k_mutex_unlock(&dev_data->tx_lock);
 #endif
 	return 0;
 }
+=======
+	return k_mutex_unlock(&dev_data->tx_lock);
+}
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 static uint32_t data_available(struct icmsg_data_t *dev_data)
 {
 	return pbuf_read(dev_data->rx_pb, NULL, 0);
 }
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_MULTITHREADING
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 static void submit_mbox_work(struct icmsg_data_t *dev_data)
 {
 	if (k_work_submit_to_queue(workq, &dev_data->mbox_work) < 0) {
@@ -121,10 +194,40 @@ static void submit_work_if_buffer_free_and_data_available(
 
 	submit_mbox_work(dev_data);
 }
+<<<<<<< HEAD
 
 static void mbox_callback_process(struct k_work *item)
 {
 	struct icmsg_data_t *dev_data = CONTAINER_OF(item, struct icmsg_data_t, mbox_work);
+=======
+#else
+static void submit_if_buffer_free(struct icmsg_data_t *dev_data)
+{
+	mbox_callback_process(dev_data);
+}
+
+static void submit_if_buffer_free_and_data_available(
+		struct icmsg_data_t *dev_data)
+{
+
+	if (!data_available(dev_data)) {
+		return;
+	}
+
+	mbox_callback_process(dev_data);
+}
+#endif
+
+#ifdef CONFIG_MULTITHREADING
+static void mbox_callback_process(struct k_work *item)
+#else
+static void mbox_callback_process(struct icmsg_data_t *dev_data)
+#endif
+{
+#ifdef CONFIG_MULTITHREADING
+	struct icmsg_data_t *dev_data = CONTAINER_OF(item, struct icmsg_data_t, mbox_work);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	atomic_t state = atomic_get(&dev_data->state);
 
@@ -141,8 +244,12 @@ static void mbox_callback_process(struct k_work *item)
 
 	if (state == ICMSG_STATE_READY) {
 		if (dev_data->cb->received) {
+<<<<<<< HEAD
 			dev_data->cb->received(rx_buffer, len,
 					       dev_data->ctx);
+=======
+			dev_data->cb->received(rx_buffer, len, dev_data->ctx);
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		}
 	} else {
 		__ASSERT_NO_MSG(state == ICMSG_STATE_BUSY);
@@ -162,15 +269,31 @@ static void mbox_callback_process(struct k_work *item)
 
 		atomic_set(&dev_data->state, ICMSG_STATE_READY);
 	}
+<<<<<<< HEAD
 
 	submit_work_if_buffer_free_and_data_available(dev_data);
+=======
+#ifdef CONFIG_MULTITHREADING
+	submit_work_if_buffer_free_and_data_available(dev_data);
+#else
+	submit_if_buffer_free_and_data_available(dev_data);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 }
 
 static void mbox_callback(const struct device *instance, uint32_t channel,
 			  void *user_data, struct mbox_msg *msg_data)
 {
 	struct icmsg_data_t *dev_data = user_data;
+<<<<<<< HEAD
 	submit_work_if_buffer_free(dev_data);
+=======
+#ifdef CONFIG_MULTITHREADING
+	submit_work_if_buffer_free(dev_data);
+#else
+	submit_if_buffer_free(dev_data);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 }
 
 static int mbox_init(const struct icmsg_config_t *conf,
@@ -178,8 +301,15 @@ static int mbox_init(const struct icmsg_config_t *conf,
 {
 	int err;
 
+<<<<<<< HEAD
 	k_work_init(&dev_data->mbox_work, mbox_callback_process);
 	k_work_init_delayable(&dev_data->notify_work, notify_process);
+=======
+#ifdef CONFIG_MULTITHREADING
+	k_work_init(&dev_data->mbox_work, mbox_callback_process);
+	k_work_init_delayable(&dev_data->notify_work, notify_process);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	err = mbox_register_callback_dt(&conf->mbox_rx, mbox_callback, dev_data);
 	if (err != 0) {
@@ -233,12 +363,22 @@ int icmsg_open(const struct icmsg_config_t *conf,
 	if (ret) {
 		return ret;
 	}
+<<<<<<< HEAD
 
+=======
+#ifdef CONFIG_MULTITHREADING
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	ret = k_work_schedule_for_queue(workq, &dev_data->notify_work, K_NO_WAIT);
 	if (ret < 0) {
 		return ret;
 	}
+<<<<<<< HEAD
 
+=======
+#else
+	notify_process(dev_data);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	return 0;
 }
 
@@ -263,7 +403,13 @@ int icmsg_send(const struct icmsg_config_t *conf,
 {
 	int ret;
 	int write_ret;
+<<<<<<< HEAD
 	int release_ret;
+=======
+#ifdef CONFIG_IPC_SERVICE_ICMSG_SHMEM_ACCESS_SYNC
+	int release_ret;
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	int sent_bytes;
 
 	if (!is_endpoint_ready(dev_data)) {
@@ -275,14 +421,29 @@ int icmsg_send(const struct icmsg_config_t *conf,
 		return -ENODATA;
 	}
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_IPC_SERVICE_ICMSG_SHMEM_ACCESS_SYNC
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	ret = reserve_tx_buffer_if_unused(dev_data);
 	if (ret < 0) {
 		return -ENOBUFS;
 	}
+<<<<<<< HEAD
 
 	write_ret = pbuf_write(dev_data->tx_pb, msg, len);
 	release_ret = release_tx_buffer(dev_data);
 	__ASSERT_NO_MSG(!release_ret);
+=======
+#endif
+
+	write_ret = pbuf_write(dev_data->tx_pb, msg, len);
+
+#ifdef CONFIG_IPC_SERVICE_ICMSG_SHMEM_ACCESS_SYNC
+	release_ret = release_tx_buffer(dev_data);
+	__ASSERT_NO_MSG(!release_ret);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	if (write_ret < 0) {
 		return write_ret;

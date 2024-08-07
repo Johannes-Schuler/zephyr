@@ -6,11 +6,14 @@
 
 #include <zephyr/init.h>
 #include <zephyr/kernel.h>
+<<<<<<< HEAD
 #include <zephyr/logging/log.h>
 #include <soc.h>
 #include <hal/nrf_reset.h>
 
 LOG_MODULE_REGISTER(thingy53_board_init);
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 /* Initialization chain of Thingy:53 board requires some delays before on board sensors
  * could be accessed after power up. In particular bme680 and bmm150 sensors require,
@@ -34,6 +37,7 @@ BUILD_ASSERT(CONFIG_THINGY53_INIT_PRIORITY < CONFIG_SENSOR_INIT_PRIORITY,
 	"CONFIG_THINGY53_INIT_PRIORITY must be less than CONFIG_SENSOR_INIT_PRIORITY");
 #endif
 
+<<<<<<< HEAD
 static void enable_cpunet(void)
 {
 #if !defined(CONFIG_TRUSTED_EXECUTION_NONSECURE)
@@ -78,8 +82,25 @@ static int setup(void)
 	if (IS_ENABLED(CONFIG_BOARD_ENABLE_CPUNET)) {
 		enable_cpunet();
 	}
+=======
+#if !defined(CONFIG_TRUSTED_EXECUTION_SECURE) && defined(CONFIG_SENSOR)
+static int setup(void)
+{
+	/* Initialization chain of Thingy:53 board requires some delays before on board
+	 * sensors could be accessed after power up. In particular bme680 and bmm150
+	 * sensors require, 2ms and 1ms power on delay respectively. In order not to sum
+	 * delays, common delay is introduced in the board start up file. This code is
+	 * executed after sensors are powered up and before their initialization.
+	 * It's ensured by build asserts at the beginning of this file.
+	 */
+	k_msleep(2);
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	return 0;
 }
 
 SYS_INIT(setup, POST_KERNEL, CONFIG_THINGY53_INIT_PRIORITY);
+<<<<<<< HEAD
+=======
+#endif /* !CONFIG_TRUSTED_EXECUTION_SECURE && CONFIG_SENSOR */
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911

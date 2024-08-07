@@ -11,6 +11,10 @@
 #include <zephyr/drivers/i2c.h>
 #include <zephyr/drivers/gpio.h>
 #include <zephyr/logging/log.h>
+<<<<<<< HEAD
+=======
+#include <zephyr/dt-bindings/input/cst816s-gesture-codes.h>
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 LOG_MODULE_REGISTER(cst816s, CONFIG_INPUT_LOG_LEVEL);
 
@@ -115,6 +119,19 @@ static int cst816s_process(const struct device *dev)
 	uint16_t x;
 	uint16_t y;
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_INPUT_CST816S_EV_DEVICE
+	uint8_t gesture;
+
+	r = i2c_burst_read_dt(&cfg->i2c, CST816S_REG_GESTURE_ID, &gesture, sizeof(gesture));
+	if (r < 0) {
+		LOG_ERR("Could not read gesture-ID data");
+		return r;
+	}
+#endif
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	r = i2c_burst_read_dt(&cfg->i2c, CST816S_REG_XPOS_H, (uint8_t *)&x, sizeof(x));
 	if (r < 0) {
 		LOG_ERR("Could not read x data");
@@ -142,6 +159,21 @@ static int cst816s_process(const struct device *dev)
 		input_report_key(dev, INPUT_BTN_TOUCH, 0, true, K_FOREVER);
 	}
 
+<<<<<<< HEAD
+=======
+#ifdef CONFIG_INPUT_CST816S_EV_DEVICE
+	/* Also put the custom touch gestures into the input queue,
+	 * some applications may want to process it
+	 */
+
+	LOG_DBG("gesture: %d", gesture);
+
+	if (gesture != CST816S_GESTURE_CODE_NONE) {
+		input_report(dev, INPUT_EV_DEVICE, (uint16_t)gesture, 0, true, K_FOREVER);
+	}
+#endif
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	return r;
 }
 
@@ -221,13 +253,27 @@ static int cst816s_chip_init(const struct device *dev)
 static int cst816s_init(const struct device *dev)
 {
 	struct cst816s_data *data = dev->data;
+<<<<<<< HEAD
+=======
+	int ret;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	data->dev = dev;
 	k_work_init(&data->work, cst816s_work_handler);
 
+<<<<<<< HEAD
 #ifdef CONFIG_INPUT_CST816S_INTERRUPT
 	const struct cst816s_config *config = dev->config;
 	int ret;
+=======
+	ret = cst816s_chip_init(dev);
+	if (ret < 0) {
+		return ret;
+	}
+
+#ifdef CONFIG_INPUT_CST816S_INTERRUPT
+	const struct cst816s_config *config = dev->config;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	if (!gpio_is_ready_dt(&config->int_gpio)) {
 		LOG_ERR("GPIO port %s not ready", config->int_gpio.port->name);
@@ -259,7 +305,11 @@ static int cst816s_init(const struct device *dev)
 		      K_MSEC(CONFIG_INPUT_CST816S_PERIOD));
 #endif
 
+<<<<<<< HEAD
 	return cst816s_chip_init(dev);
+=======
+	return ret;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 }
 
 #define CST816S_DEFINE(index)                                                                      \

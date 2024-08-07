@@ -80,8 +80,13 @@ state.
    case is asynchronous.  The on-off client structure may be an
    appropriate solution for the generic API.  Where drivers that can
    guarantee synchronous context-independent transitions a driver may
+<<<<<<< HEAD
    use :c:type:`onoff_sync_service` and its supporting API rather than
    :c:type:`onoff_manager`, with only a small reduction in functionality
+=======
+   use :c:struct:`onoff_sync_service` and its supporting API rather than
+   :c:struct:`onoff_manager`, with only a small reduction in functionality
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
    (primarily no support for the monitor API).
 
 .. doxygengroup:: resource_mgmt_onoff_apis

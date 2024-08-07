@@ -228,9 +228,16 @@ static struct flash_stm32_sector_t get_sector(const struct device *dev,
 {
 	struct flash_stm32_sector_t sector;
 	FLASH_TypeDef *regs = FLASH_STM32_REGS(dev);
+<<<<<<< HEAD
 	off_t temp_offset = offset + (CONFIG_FLASH_BASE_ADDRESS & 0xffffff);
 
 #ifdef DUAL_BANK
+=======
+
+#ifdef DUAL_BANK
+	off_t temp_offset = offset + (CONFIG_FLASH_BASE_ADDRESS & 0xffffff);
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	bool bank_swap;
 	/* Check whether bank1/2 are swapped */
 	bank_swap = (READ_BIT(FLASH->OPTCR, FLASH_OPTCR_SWAP_BANK)

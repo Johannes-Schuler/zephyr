@@ -16,6 +16,7 @@
 #define IRQ_MASK		DT_INST_REG_ADDR_BY_NAME(0, irq_mask)
 #define IRQ_PENDING		DT_INST_REG_ADDR_BY_NAME(0, irq_pending)
 
+<<<<<<< HEAD
 #define TIMER0_IRQ		DT_IRQN(DT_INST(0, litex_timer0))
 #define UART0_IRQ		DT_IRQN(DT_INST(0, litex_uart0))
 
@@ -26,6 +27,8 @@
 
 #define GPIO_IRQ		DT_IRQN(DT_NODELABEL(gpio_in))
 
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 static inline void vexriscv_litex_irq_setmask(uint32_t mask)
 {
 	__asm__ volatile ("csrw %0, %1" :: "i"(IRQ_MASK), "r"(mask));
@@ -58,6 +61,17 @@ static inline void vexriscv_litex_irq_setie(uint32_t ie)
 	}
 }
 
+<<<<<<< HEAD
+=======
+#define LITEX_IRQ_ADD_HELPER(n)                                                                    \
+	if (irqs & (1 << DT_IRQN(n))) {                                                            \
+		ite = &_sw_isr_table[DT_IRQN(n)];                                                  \
+		ite->isr(ite->arg);                                                                \
+	}
+
+#define LITEX_IRQ_ADD(n) IF_ENABLED(DT_IRQ_HAS_IDX(n, 0), (LITEX_IRQ_ADD_HELPER(n)))
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 static void vexriscv_litex_irq_handler(const void *device)
 {
 	struct _isr_table_entry *ite;
@@ -67,6 +81,7 @@ static void vexriscv_litex_irq_handler(const void *device)
 	mask = vexriscv_litex_irq_getmask();
 	irqs = pending & mask;
 
+<<<<<<< HEAD
 #ifdef CONFIG_LITEX_TIMER
 	if (irqs & (1 << TIMER0_IRQ)) {
 		ite = &_sw_isr_table[TIMER0_IRQ];
@@ -103,6 +118,9 @@ static void vexriscv_litex_irq_handler(const void *device)
 		ite = &_sw_isr_table[GPIO_IRQ];
 		ite->isr(ite->arg);
 	}
+=======
+	DT_FOREACH_STATUS_OKAY_NODE(LITEX_IRQ_ADD);
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 }
 
 void arch_irq_enable(unsigned int irq)

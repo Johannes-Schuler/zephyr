@@ -228,6 +228,7 @@ stm32_lp_tick_source: &lptim1 {
 	status = "okay";
 	clock-frequency = <I2C_BITRATE_FAST>;
 
+<<<<<<< HEAD
 	hts221@5f {
 		compatible = "st,hts221";
 		reg = <0x5f>;
@@ -235,6 +236,8 @@ stm32_lp_tick_source: &lptim1 {
 		status = "okay";
 	};
 
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	lps22df@5d {
 		compatible = "st,lps22df";
 		reg = <0x5d>;

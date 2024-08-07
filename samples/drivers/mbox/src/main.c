@@ -47,7 +47,15 @@ int main(void)
 	printk("Maximum TX channels: %d\n", mbox_max_channels_get_dt(&tx_channel));
 
 	while (1) {
+<<<<<<< HEAD
 		k_sleep(K_MSEC(2000));
+=======
+#if defined(CONFIG_MULTITHREADING)
+		k_sleep(K_MSEC(2000));
+#else
+		k_busy_wait(2000000);
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 		printk("Ping (on channel %d)\n", tx_channel.channel_id);
 

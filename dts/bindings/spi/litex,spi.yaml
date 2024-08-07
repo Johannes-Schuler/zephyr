@@ -10,3 +10,18 @@ include: spi-controller.yaml
 properties:
   reg:
     required: true
+<<<<<<< HEAD
+=======
+
+  data-width:
+    type: int
+    description: |
+      Maximum data width of the SPI controller in bits.
+    default: 8
+
+  max-cs:
+    type: int
+    description: |
+      Maximum number of chip selects supported by the SPI controller.
+    default: 1
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911

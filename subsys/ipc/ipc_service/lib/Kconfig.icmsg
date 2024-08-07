@@ -3,6 +3,10 @@
 
 config IPC_SERVICE_ICMSG_SHMEM_ACCESS_SYNC
 	bool "Synchronize access to shared memory"
+<<<<<<< HEAD
+=======
+	depends on MULTITHREADING
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	default y
 	help
 	  Provide synchronization access to shared memory at a library level.
@@ -30,6 +34,10 @@ config IPC_SERVICE_ICMSG_BOND_NOTIFY_REPEAT_TO_MS
 
 config IPC_SERVICE_BACKEND_ICMSG_WQ_ENABLE
 	bool "Use dedicated workqueue"
+<<<<<<< HEAD
+=======
+	depends on MULTITHREADING
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	default y
 	help
 	  Enable dedicated workqueue thread for the ICMsg backend.

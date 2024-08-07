@@ -148,6 +148,10 @@ static int coap_client_init_request(struct coap_client *client,
 {
 	int ret = 0;
 	int i;
+<<<<<<< HEAD
+=======
+	bool block2 = false;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	memset(client->send_buf, 0, sizeof(client->send_buf));
 
@@ -189,6 +193,10 @@ static int coap_client_init_request(struct coap_client *client,
 
 	/* Blockwise receive ongoing, request next block. */
 	if (internal_req->recv_blk_ctx.current > 0) {
+<<<<<<< HEAD
+=======
+		block2 = true;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		ret = coap_append_block2_option(&internal_req->request,
 						&internal_req->recv_blk_ctx);
 
@@ -200,6 +208,17 @@ static int coap_client_init_request(struct coap_client *client,
 
 	/* Add extra options if any */
 	for (i = 0; i < req->num_options; i++) {
+<<<<<<< HEAD
+=======
+		if (COAP_OPTION_BLOCK2 == req->options[i].code && block2) {
+			/* After the first request, ignore any block2 option added by the
+			 * application, since NUM (and possibly SZX) must be updated based on the
+			 * server response.
+			 */
+			continue;
+		}
+
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		ret = coap_packet_append_option(&internal_req->request, req->options[i].code,
 						req->options[i].value, req->options[i].len);
 

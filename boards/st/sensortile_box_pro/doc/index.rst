@@ -163,8 +163,11 @@ Motion and environmental sensors
     (`lps22df datasheet`_)
   - **LIS2DU12** 3-axis accelerometer
     (`lis2du12 datasheet`_)
+<<<<<<< HEAD
   - **HTS221** Humidity sensor
     (`hts221 datasheet`_)
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
   - **STTS22H** Digital temperature sensor
     (`stts22hh datasheet`_)
   - **MP23db01HP** Microphone / audio sensor
@@ -353,9 +356,12 @@ References
 .. _lis2du12 datasheet:
    https://www.st.com/en/mems-and-sensors/lis2du12.html
 
+<<<<<<< HEAD
 .. _hts221 datasheet:
    https://www.st.com/en/mems-and-sensors/hts221.html
 
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 .. _stts22hh datasheet:
    https://www.st.com/en/mems-and-sensors/stts22h.html
 

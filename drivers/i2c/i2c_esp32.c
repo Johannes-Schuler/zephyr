@@ -654,9 +654,12 @@ static int IRAM_ATTR i2c_esp32_transfer(const struct device *dev, struct i2c_msg
 				ret = -EINVAL;
 				break;
 			}
+<<<<<<< HEAD
 		} else {
 			/* make sure the last message contains stop event */
 			current->flags |= I2C_MSG_STOP;
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		}
 
 		current++;

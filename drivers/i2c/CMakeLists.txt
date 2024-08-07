@@ -21,7 +21,10 @@ zephyr_library_sources_ifdef(CONFIG_I2C_IMX		i2c_imx.c)
 zephyr_library_sources_ifdef(CONFIG_I2C_LPC11U6X        i2c_lpc11u6x.c)
 zephyr_library_sources_ifdef(CONFIG_I2C_XEC		i2c_mchp_xec.c)
 zephyr_library_sources_ifdef(CONFIG_I2C_MCUX		i2c_mcux.c)
+<<<<<<< HEAD
 zephyr_library_sources_ifdef(CONFIG_I2C_MCUX_IMX		i2c_mcux_imx.c)
+=======
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 zephyr_library_sources_ifdef(CONFIG_I2C_MCUX_FLEXCOMM	i2c_mcux_flexcomm.c)
 
 if(CONFIG_I2C_RTIO)

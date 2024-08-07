@@ -14,26 +14,63 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(remote, LOG_LEVEL_INF);
 
+<<<<<<< HEAD
 
 K_SEM_DEFINE(bound_sem, 0, 1);
 
 static void ep_bound(void *priv)
 {
 	k_sem_give(&bound_sem);
+=======
+#if defined(CONFIG_MULTITHREADING)
+K_SEM_DEFINE(bound_sem, 0, 1);
+#else
+volatile uint32_t bound_sem = 1;
+volatile uint32_t recv_sem = 1;
+#endif
+
+static unsigned char expected_message = 'a';
+static size_t expected_len = PACKET_SIZE_START;
+static size_t received;
+
+static void ep_bound(void *priv)
+{
+	received = 0;
+#if defined(CONFIG_MULTITHREADING)
+	k_sem_give(&bound_sem);
+#else
+	bound_sem = 0;
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	LOG_INF("Ep bounded");
 }
 
 static void ep_recv(const void *data, size_t len, void *priv)
 {
+<<<<<<< HEAD
 	struct data_packet *packet = (struct data_packet *)data;
 	static unsigned char expected_message = 'a';
 	static size_t expected_len = PACKET_SIZE_START;
+=======
+#if defined(CONFIG_ASSERT)
+	struct data_packet *packet = (struct data_packet *)data;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	__ASSERT(packet->data[0] == expected_message, "Unexpected message. Expected %c, got %c",
 		expected_message, packet->data[0]);
 	__ASSERT(len == expected_len, "Unexpected length. Expected %zu, got %zu",
 		expected_len, len);
+<<<<<<< HEAD
 
+=======
+#endif
+
+#ifndef CONFIG_MULTITHREADING
+	recv_sem = 0;
+#endif
+
+	received += len;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	expected_message++;
 	expected_len++;
 
@@ -61,11 +98,23 @@ static int send_for_time(struct ipc_ept *ep, const int64_t sending_time_ms)
 		ret = ipc_service_send(ep, &msg, mlen);
 		if (ret == -ENOMEM) {
 			/* No space in the buffer. Retry. */
+<<<<<<< HEAD
+=======
+			ret = 0;
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 			continue;
 		} else if (ret < 0) {
 			LOG_ERR("Failed to send (%c) failed with ret %d", msg.data[0], ret);
 			break;
 		}
+<<<<<<< HEAD
+=======
+#if !defined(CONFIG_MULTITHREADING)
+		else {
+			recv_sem = 1;
+		}
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 		msg.data[0]++;
 		if (msg.data[0] > 'Z') {
@@ -79,7 +128,16 @@ static int send_for_time(struct ipc_ept *ep, const int64_t sending_time_ms)
 			mlen = PACKET_SIZE_START;
 		}
 
+<<<<<<< HEAD
 		k_usleep(1);
+=======
+#if defined(CONFIG_MULTITHREADING)
+		k_usleep(1);
+#else
+		while ((recv_sem != 0) && ((k_uptime_get() - start) < sending_time_ms)) {
+		};
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	}
 
 	LOG_INF("Sent %zu [Bytes] over %lld [ms]", bytes_sent, sending_time_ms);
@@ -111,12 +169,25 @@ int main(void)
 	}
 
 	ret = ipc_service_register_endpoint(ipc0_instance, &ep, &ep_cfg);
+<<<<<<< HEAD
 	if (ret != 0) {
+=======
+	if (ret < 0) {
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		LOG_ERR("ipc_service_register_endpoint() failure");
 		return ret;
 	}
 
+<<<<<<< HEAD
 	k_sem_take(&bound_sem, K_FOREVER);
+=======
+#if defined(CONFIG_MULTITHREADING)
+	k_sem_take(&bound_sem, K_FOREVER);
+#else
+	while (bound_sem != 0) {
+	};
+#endif
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	ret = send_for_time(&ep, SENDING_TIME_MS);
 	if (ret < 0) {
@@ -124,6 +195,10 @@ int main(void)
 		return ret;
 	}
 
+<<<<<<< HEAD
+=======
+	LOG_INF("Received %zu [Bytes] in total", received);
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	LOG_INF("IPC-service REMOTE demo ended");
 
 	return 0;

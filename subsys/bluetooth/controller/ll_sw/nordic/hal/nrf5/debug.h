@@ -7,9 +7,13 @@
 
 #if defined(CONFIG_BT_CTLR_DEBUG_PINS) || \
 	defined(CONFIG_BT_CTLR_DEBUG_PINS_CPUAPP)
+<<<<<<< HEAD
 #if defined(CONFIG_BOARD_NRF5340DK_NRF5340_CPUAPP) || \
 	defined(CONFIG_BOARD_NRF5340DK_NRF5340_CPUAPP_NS) || \
 	defined(CONFIG_BOARD_NRF5340DK_NRF5340_CPUNET)
+=======
+#if defined(CONFIG_BOARD_NRF5340DK)
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #define DEBUG_PORT       NRF_P1
 #define DEBUG_PIN_IDX0   0
 #define DEBUG_PIN_IDX1   1
@@ -47,9 +51,16 @@
 		soc_secure_gpio_pin_mcu_select(32 + DEBUG_PIN_IDX8, NRF_GPIO_PIN_SEL_NETWORK); \
 		soc_secure_gpio_pin_mcu_select(32 + DEBUG_PIN_IDX9, NRF_GPIO_PIN_SEL_NETWORK); \
 	} while (0)
+<<<<<<< HEAD
 #endif /* CONFIG_BOARD_NRF5340DK_NRF5340_CPUAPP */
 #elif defined(CONFIG_BOARD_NRF52840DK_NRF52840) || \
 	defined(CONFIG_BOARD_NRF52833DK_NRF52833)
+=======
+#else
+#define DEBUG_SETUP()
+#endif /* CONFIG_BOARD_NRF5340DK_NRF5340_CPUAPP */
+#elif defined(CONFIG_BOARD_NRF52840DK) || defined(CONFIG_BOARD_NRF52833DK)
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #define DEBUG_PORT       NRF_P1
 #define DEBUG_PIN0       BIT(1)
 #define DEBUG_PIN1       BIT(2)
@@ -61,8 +72,13 @@
 #define DEBUG_PIN7       BIT(8)
 #define DEBUG_PIN8       BIT(10)
 #define DEBUG_PIN9       BIT(11)
+<<<<<<< HEAD
 #elif defined(CONFIG_BOARD_NRF52DK_NRF52832) || \
 	defined(CONFIG_BOARD_NRF52DK_NRF52810)
+=======
+#define DEBUG_SETUP()
+#elif defined(CONFIG_BOARD_NRF52DK)
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #define DEBUG_PORT       NRF_GPIO
 #define DEBUG_PIN0       BIT(11)
 #define DEBUG_PIN1       BIT(12)
@@ -74,7 +90,12 @@
 #define DEBUG_PIN7       BIT(18)
 #define DEBUG_PIN8       BIT(19)
 #define DEBUG_PIN9       BIT(20)
+<<<<<<< HEAD
 #elif defined(CONFIG_BOARD_NRF51DK_NRF51822)
+=======
+#define DEBUG_SETUP()
+#elif defined(CONFIG_BOARD_NRF51DK)
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #define DEBUG_PORT       NRF_GPIO
 #define DEBUG_PIN0       BIT(12)
 #define DEBUG_PIN1       BIT(13)
@@ -86,6 +107,10 @@
 #define DEBUG_PIN7       BIT(19)
 #define DEBUG_PIN8       BIT(20)
 #define DEBUG_PIN9       BIT(23)
+<<<<<<< HEAD
+=======
+#define DEBUG_SETUP()
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #else
 #error BT_CTLR_DEBUG_PINS not supported on this board.
 #endif
@@ -321,6 +346,10 @@
 	} while (0)
 
 #else
+<<<<<<< HEAD
+=======
+#define DEBUG_SETUP()
+>>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #define DEBUG_INIT()
 #define DEBUG_CPU_SLEEP(flag)
 #define DEBUG_TICKER_ISR(flag)
