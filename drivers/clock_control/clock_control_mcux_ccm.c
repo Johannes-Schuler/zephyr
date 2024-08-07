@@ -20,7 +20,7 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(clock_control);
 
-#ifdef CONFIG_I2C_MCUX
+#ifdef CONFIG_I2C_MCUX_IMX
 static const clock_root_control_t i2c_clk_root[] = {
 	kCLOCK_RootI2c1,
 	kCLOCK_RootI2c2,
@@ -95,11 +95,13 @@ static int mcux_ccm_on(const struct device *dev,
 	uint32_t instance = clock_name & IMX_CCM_INSTANCE_MASK;
 
 	switch (clock_name) {
-#ifdef CONFIG_I2C_MCUX
+#ifdef CONFIG_I2C_MCUX_IMX
 	case IMX_CCM_I2C1_CLK:
 	case IMX_CCM_I2C2_CLK:
 	case IMX_CCM_I2C3_CLK:
-		CLOCK_EnableClock(i2c_clocks[instance]);
+		CLOCK_EnableClock(kCLOCK_I2c3);
+		CLOCK_SetRootMux(kCLOCK_RootI2c3, kCLOCK_I2cRootmuxSysPll1Div5); /* Set I2C source to SysPLL1 Div5 160MHZ */
+    CLOCK_SetRootDivider(kCLOCK_RootI2c3, 8U, 50U);
 		return 0;
 	case IMX_CCM_I2C4_CLK:
 #endif
@@ -155,7 +157,7 @@ static int mcux_ccm_off(const struct device *dev,
 	uint32_t instance = clock_name & IMX_CCM_INSTANCE_MASK;
 
 	switch (clock_name) {
-#ifdef CONFIG_I2C_MCUX
+#ifdef CONFIG_I2C_MCUX_IMX
 	case IMX_CCM_I2C1_CLK:
 	case IMX_CCM_I2C2_CLK:
 	case IMX_CCM_I2C3_CLK:
@@ -292,26 +294,26 @@ static int mcux_ccm_get_subsys_rate(const struct device *dev,
 		break;
 #endif
 
-#ifdef CONFIG_I2C_MCUX
+#ifdef CONFIG_I2C_MCUX_IMX
 	case IMX_CCM_I2C1_CLK:
+		*rate = (CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) /
+			(CLOCK_GetRootPreDivider(kCLOCK_RootI2c1)) /
+			(CLOCK_GetRootPostDivider(kCLOCK_RootI2c1)) / 5);
+		break;
 	case IMX_CCM_I2C2_CLK:
+		*rate = (CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) /
+			(CLOCK_GetRootPreDivider(kCLOCK_RootI2c2)) /
+			(CLOCK_GetRootPostDivider(kCLOCK_RootI2c2)) / 5);
+		break;
 	case IMX_CCM_I2C3_CLK:
-	{
-		uint32_t instance = clock_name & IMX_CCM_INSTANCE_MASK;
-		clock_root_control_t clk_root = i2c_clk_root[instance];
-		uint32_t i2c_mux = CLOCK_GetRootMux(clk_root);
-
-		if (i2c_mux == 0) {
-			*rate = MHZ(24);
-		} else if (i2c_mux == 1) {
-			*rate = CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) /
-				(CLOCK_GetRootPreDivider(clk_root)) /
-				(CLOCK_GetRootPostDivider(clk_root)) /
-				10;
-		}
-
-	} break;
+		*rate = (CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) / (CLOCK_GetRootPreDivider(kCLOCK_RootI2c3)) / \
+     (CLOCK_GetRootPostDivider(kCLOCK_RootI2c3)) / 2000);
+		break;
 	case IMX_CCM_I2C4_CLK:
+		*rate = (CLOCK_GetPllFreq(kCLOCK_SystemPll1Ctrl) /
+			(CLOCK_GetRootPreDivider(kCLOCK_RootI2c4)) /
+			(CLOCK_GetRootPostDivider(kCLOCK_RootI2c4)) / 5);
+		break;
 #endif
 
 #ifdef CONFIG_UART_MCUX_IUART
