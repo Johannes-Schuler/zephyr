@@ -47,7 +47,6 @@ struct i2c_mcux_data {
 static int i2c_mcux_configure(const struct device *dev,
 			      uint32_t dev_config_raw)
 {
-	printk("Entering i2c_mcux_configure\n");
 	I2C_Type *base = DEV_BASE(dev);
 	struct i2c_mcux_data *data = dev->data;
 	const struct i2c_mcux_config *config = dev->config;
@@ -99,7 +98,6 @@ static void i2c_mcux_master_transfer_callback(I2C_Type *base,
 					      status_t status, void *userdata)
 {
 
-	printk("Entering i2c_mcux_master_transfer_callback\n");
 	ARG_UNUSED(handle);
 	ARG_UNUSED(base);
 
@@ -145,7 +143,6 @@ static uint32_t i2c_mcux_convert_flags(int msg_flags)
 static int i2c_mcux_transfer(const struct device *dev, struct i2c_msg *msgs,
 			     uint8_t num_msgs, uint16_t addr)
 {
-	printk("Entering i2c_mcux_transfer\n");
 	I2C_Type *base = DEV_BASE(dev);
 	struct i2c_mcux_data *data = dev->data;
 	i2c_master_transfer_t transfer;
@@ -179,7 +176,6 @@ static int i2c_mcux_transfer(const struct device *dev, struct i2c_msg *msgs,
 		}
 
 		/* Start the transfer */
-		printk("Starting I2C transfer\n");
 		status = I2C_MasterTransferNonBlocking(base,
 				&data->handle, &transfer);
 
@@ -187,21 +183,18 @@ static int i2c_mcux_transfer(const struct device *dev, struct i2c_msg *msgs,
 		 * e.g., if the bus was busy
 		 */
 		if (status != kStatus_Success) {
-			printk("I2C transfer failed to start: %d\n", status);
 			I2C_MasterTransferAbort(base, &data->handle);
 			ret = -EIO;
 			break;
 		}
 
 		/* Wait for the transfer to complete */
-		printk("Waiting for I2C transfer to complete\n");
 		k_sem_take(&data->device_sync_sem, K_FOREVER);
 
 		/* Return an error if the transfer didn't complete
 		 * successfully. e.g., nak, timeout, lost arbitration
 		 */
 		if (data->callback_status != kStatus_Success) {
-			printk("I2C transfer completed with error: %d\n", data->callback_status);
 			I2C_MasterTransferAbort(base, &data->handle);
 			ret = -EIO;
 			break;
@@ -307,7 +300,6 @@ static int i2c_mcux_transfer_cb(const struct device *dev, struct i2c_msg *msgs, 
 
 static void i2c_mcux_isr(const struct device *dev)
 {
-	printk("I2C ISR triggered\n");
 	I2C_Type *base = DEV_BASE(dev);
 	struct i2c_mcux_data *data = dev->data;
 
@@ -316,7 +308,6 @@ static void i2c_mcux_isr(const struct device *dev)
 
 static int i2c_mcux_init(const struct device *dev)
 {
-	printk("Entering i2x_mcux_init\n");
 	I2C_Type *base = DEV_BASE(dev);
 	const struct i2c_mcux_config *config = dev->config;
 	struct i2c_mcux_data *data = dev->data;
@@ -331,12 +322,11 @@ static int i2c_mcux_init(const struct device *dev)
 		return -ENODEV;
 	}
 
-	printk("Getting clock freq...\n");
 	if (clock_control_get_rate(config->clock_dev, config->clock_subsys,
 				   &clock_freq)) {
 		return -EINVAL;
 	}
-	printk("Clock freq value: %d\n", clock_freq);
+
 	I2C_MasterGetDefaultConfig(&master_config);
 	if(clock_control_on(config->clock_dev, config->clock_subsys)) {
 		return -EINVAL;
@@ -350,14 +340,12 @@ static int i2c_mcux_init(const struct device *dev)
 
 	error = pinctrl_apply_state(config->pincfg, PINCTRL_STATE_DEFAULT);
 	if (error) {
-		printk("Failed to apply pinctrl state: %d\n", error);
 		clock_control_off(config->clock_dev, config->clock_subsys);
 		return error;
 	}
 
 	error = i2c_mcux_configure(dev, I2C_MODE_CONTROLLER | bitrate_cfg);
 	if (error) {
-		printk("Failed to configure I2C: %d\n", error);
 		return error;
 	}
 
@@ -398,15 +386,12 @@ static const struct i2c_driver_api i2c_mcux_driver_api = {
 										\
 	static void i2c_mcux_config_func_##n(const struct device *dev) \
 	{																								\
-		printk("Configuring IRQ for I2C device\n");		\
 		IRQ_CONNECT(DT_INST_IRQN(n),									\
 			DT_INST_IRQ(n, priority),										\
 			i2c_mcux_isr,																\
 			DEVICE_DT_INST_GET(n), 0);									\
 																									\
 		irq_enable(DT_INST_IRQN(n));									\
-		printk("IRQ enabled with number %d and priority %d\n",  		\
-               DT_INST_IRQN(n), DT_INST_IRQ(n, priority));      \
 	}
 
 DT_INST_FOREACH_STATUS_OKAY(I2C_DEVICE_INIT_MCUX)
