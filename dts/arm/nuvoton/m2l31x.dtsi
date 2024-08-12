@@ -394,8 +394,6 @@
 			clocks = <&pcc NUMAKER_WWDT_MODULE NUMAKER_CLK_CLKSEL1_WWDTSEL_LIRC 0>;
 			status = "disabled";
 		};
-<<<<<<< HEAD
-=======
 
 		tcpc0: utcpd@400c6000 {
 			compatible = "nuvoton,numaker-tcpc";
@@ -423,7 +421,6 @@
 				status = "disabled";
 			};
 		};
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	};
 };
 

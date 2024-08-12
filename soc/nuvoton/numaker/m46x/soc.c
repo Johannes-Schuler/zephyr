@@ -16,12 +16,9 @@ void z_arm_platform_init(void)
 	/* Unlock protected registers */
 	SYS_UnlockReg();
 
-<<<<<<< HEAD
-=======
 	/* Release I/O hold status */
 	CLK->IOPDCTL = 1;
 
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	/*
 	 * -------------------
 	 * Init System Clock

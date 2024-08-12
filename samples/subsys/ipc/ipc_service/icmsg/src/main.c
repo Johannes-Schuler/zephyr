@@ -18,13 +18,6 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_REGISTER(host, LOG_LEVEL_INF);
 
-<<<<<<< HEAD
-
-K_SEM_DEFINE(bound_sem, 0, 1);
-static unsigned char expected_message = 'A';
-static size_t expected_len = PACKET_SIZE_START;
-
-=======
 #if defined(CONFIG_MULTITHREADING)
 K_SEM_DEFINE(bound_sem, 0, 1);
 #else
@@ -34,45 +27,33 @@ volatile uint32_t recv_sem = 1;
 
 static unsigned char expected_message = 'A';
 static size_t expected_len = PACKET_SIZE_START;
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 static size_t received;
 
 static void ep_bound(void *priv)
 {
 	received = 0;
-<<<<<<< HEAD
-
-	k_sem_give(&bound_sem);
-=======
 #if defined(CONFIG_MULTITHREADING)
 	k_sem_give(&bound_sem);
 #else
 	bound_sem = 0;
 #endif
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	LOG_INF("Ep bounded");
 }
 
 static void ep_recv(const void *data, size_t len, void *priv)
 {
-<<<<<<< HEAD
-=======
 #if defined(CONFIG_ASSERT)
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	struct data_packet *packet = (struct data_packet *)data;
 
 	__ASSERT(packet->data[0] == expected_message, "Unexpected message. Expected %c, got %c",
 		expected_message, packet->data[0]);
 	__ASSERT(len == expected_len, "Unexpected length. Expected %zu, got %zu",
 		expected_len, len);
-<<<<<<< HEAD
-=======
 #endif
 
 #ifndef CONFIG_MULTITHREADING
 	recv_sem = 0;
 #endif
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	received += len;
 	expected_message++;
@@ -108,14 +89,11 @@ static int send_for_time(struct ipc_ept *ep, const int64_t sending_time_ms)
 			LOG_ERR("Failed to send (%c) failed with ret %d", msg.data[0], ret);
 			break;
 		}
-<<<<<<< HEAD
-=======
 #if !defined(CONFIG_MULTITHREADING)
 		else {
 			recv_sem = 1;
 		}
 #endif
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 		msg.data[0]++;
 		if (msg.data[0] > 'z') {
@@ -129,16 +107,12 @@ static int send_for_time(struct ipc_ept *ep, const int64_t sending_time_ms)
 			mlen = PACKET_SIZE_START;
 		}
 
-<<<<<<< HEAD
-		k_usleep(1);
-=======
 #if defined(CONFIG_MULTITHREADING)
 		k_usleep(1);
 #else
 		while ((recv_sem != 0) && ((k_uptime_get() - start) < sending_time_ms)) {
 		};
 #endif
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	}
 
 	LOG_INF("Sent %zu [Bytes] over %lld [ms]", bytes_sent, sending_time_ms);
@@ -180,16 +154,12 @@ int main(void)
 		return ret;
 	}
 
-<<<<<<< HEAD
-	k_sem_take(&bound_sem, K_FOREVER);
-=======
 #if defined(CONFIG_MULTITHREADING)
 	k_sem_take(&bound_sem, K_FOREVER);
 #else
 	while (bound_sem != 0) {
 	};
 #endif
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	ret = send_for_time(&ep, SENDING_TIME_MS);
 	if (ret < 0) {
@@ -198,15 +168,11 @@ int main(void)
 	}
 
 	LOG_INF("Wait 500ms. Let remote core finish its sends");
-<<<<<<< HEAD
-	k_msleep(500);
-=======
 #if defined(CONFIG_MULTITHREADING)
 	k_msleep(500);
 #else
 	k_busy_wait(500000);
 #endif
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	LOG_INF("Received %zu [Bytes] in total", received);
 

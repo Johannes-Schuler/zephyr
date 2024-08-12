@@ -52,13 +52,8 @@ get_device_descriptor(struct usbd_context *const uds_ctx,
 	}
 }
 
-<<<<<<< HEAD
-int usbd_device_set_bcd(struct usbd_context *const uds_ctx,
-			const enum usbd_speed speed, const uint16_t bcd)
-=======
 int usbd_device_set_bcd_usb(struct usbd_context *const uds_ctx,
 			    const enum usbd_speed speed, const uint16_t bcd)
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 {
 	struct usb_device_descriptor *desc;
 	int ret = 0;
@@ -126,8 +121,6 @@ set_pid_exit:
 	return ret;
 }
 
-<<<<<<< HEAD
-=======
 int usbd_device_set_bcd_device(struct usbd_context *const uds_ctx,
 			       const uint16_t bcd)
 {
@@ -152,7 +145,6 @@ set_bcd_device_exit:
 	return ret;
 }
 
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 int usbd_device_set_code_triple(struct usbd_context *const uds_ctx,
 				const enum usbd_speed speed,
 				const uint8_t base_class,

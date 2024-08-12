@@ -464,8 +464,6 @@ afterwards detach the debug session:
 
    west debug --tool-opt='--batch'
 
-<<<<<<< HEAD
-=======
 probe-rs Debug Host Tools
 *************************
 
@@ -477,7 +475,6 @@ Check `probe-rs Installation`_ for more setup details.
 
 Check if your SoC is listed in `probe-rs Supported Devices`_.
 
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 .. _J-Link Software and Documentation Pack:
    https://www.segger.com/downloads/jlink/#J-LinkSoftwareAndDocumentationPack
 
@@ -522,12 +519,9 @@ Check if your SoC is listed in `probe-rs Supported Devices`_.
 
 .. _S32 Design Studio for S32 Platform Installation User Guide:
    https://www.nxp.com/webapp/Download?colCode=S32DSIG
-<<<<<<< HEAD
-=======
 
 .. _probe-rs Installation:
    https://probe.rs/docs/getting-started/installation/
 
 .. _probe-rs Supported Devices:
    https://probe.rs/targets/
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911

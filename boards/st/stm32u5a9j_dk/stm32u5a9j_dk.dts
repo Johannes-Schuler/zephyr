@@ -247,15 +247,12 @@ uart0: &usart3 {
 	};
 };
 
-<<<<<<< HEAD
-=======
 zephyr_udc0: &usbotg_hs {
 	pinctrl-0 = <&usb_otg_hs_dm_pa11 &usb_otg_hs_dp_pa12>;
 	pinctrl-names = "default";
 	status = "okay";
 };
 
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 &flash0 {
 	partitions {
 		compatible = "fixed-partitions";

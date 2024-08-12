@@ -30,11 +30,7 @@ static int lis2dux12_set_odr(const struct device *dev, uint8_t odr)
 	struct lis2dux12_data *data = dev->data;
 	const struct lis2dux12_config *cfg = dev->config;
 	stmdev_ctx_t *ctx = (stmdev_ctx_t *)&cfg->ctx;
-<<<<<<< HEAD
-	lis2dux12_md_t mode = {.odr = odr};
-=======
 	lis2dux12_md_t mode = {.odr = odr, .fs = data->range};
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	data->odr = odr;
 	return lis2dux12_mode_set(ctx, &mode);

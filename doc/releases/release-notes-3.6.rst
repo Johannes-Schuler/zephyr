@@ -1007,11 +1007,7 @@ Libraries / Subsystems
     MCUboot or currently running application slot.
 
   * Fixed an issue whereby messages that were too large to be sent over the UDP transport would
-<<<<<<< HEAD
-    wrongly return :c:enum:`MGMT_ERR_EINVAL` instead of :c:enum:`MGMT_ERR_EMSGSIZE`.
-=======
     wrongly return :c:enumerator:`MGMT_ERR_EINVAL` instead of :c:enumerator:`MGMT_ERR_EMSGSIZE`.
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
   * Fixed an issue where confirming an image in Direct XIP mode would always confirm the image in
     the primary slot even when executing from the secondary slot. Now the currently active image is

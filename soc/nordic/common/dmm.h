@@ -155,8 +155,6 @@ int dmm_buffer_in_prepare(void *region, void *user_buffer, size_t user_length, v
  */
 int dmm_buffer_in_release(void *region, void *user_buffer, size_t user_length, void *buffer_in);
 
-<<<<<<< HEAD
-=======
 /**
  * @brief Initialize DMM.
  *
@@ -165,7 +163,6 @@ int dmm_buffer_in_release(void *region, void *user_buffer, size_t user_length, v
  */
 int dmm_init(void);
 
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 /** @endcond */
 
 #else
@@ -205,14 +202,11 @@ static ALWAYS_INLINE int dmm_buffer_in_release(void *region, void *user_buffer, 
 	return 0;
 }
 
-<<<<<<< HEAD
-=======
 static ALWAYS_INLINE int dmm_init(void)
 {
 	return 0;
 }
 
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #endif
 
 #ifdef __cplusplus

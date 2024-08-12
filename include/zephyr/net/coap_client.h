@@ -160,8 +160,6 @@ int coap_client_req(struct coap_client *client, int sock, const struct sockaddr 
 void coap_client_cancel_requests(struct coap_client *client);
 
 /**
-<<<<<<< HEAD
-=======
  * @brief Initialise a Block2 option to be added to a request
  *
  * If the application expects a request to require a blockwise transfer, it may pre-emptively
@@ -184,7 +182,6 @@ static inline struct coap_client_option coap_client_option_initial_block2(void)
 }
 
 /**
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
  * @}
  */
 

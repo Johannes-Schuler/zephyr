@@ -30,11 +30,6 @@ int main(void)
 
 	LOG_INF("Bluetooth initialized");
 
-<<<<<<< HEAD
-	/* TODO: Add CAP initiator broadcast support*/
-
-	/* If the CONFIG_BT_CAP_INITIATOR_UNICAST is enabled we call the cap_initiator_unicast
-=======
 	/* Broadcast is started first as the unicast part is run as loop */
 	if (IS_ENABLED(CONFIG_SAMPLE_BROADCAST)) {
 		err = cap_initiator_broadcast();
@@ -45,28 +40,18 @@ int main(void)
 	}
 
 	/* If the CONFIG_SAMPLE_UNICAST is enabled we call the cap_initiator_unicast
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	 * function that runs the application as a CAP Initiator for unicast. This will attempt to
 	 * scan for and connect to a CAP acceptor to set up a stream
 	 *
 	 * Since cap_initiator_unicast runs as a while (true) loop, this shall be done as the last
 	 * thing in this function
 	 */
-<<<<<<< HEAD
-	if (IS_ENABLED(CONFIG_BT_CAP_INITIATOR_UNICAST)) {
-		err = cap_initiator_unicast();
-	}
-
-	if (err != 0) {
-		LOG_ERR("Failed to run CAP Initiator: %d", err);
-=======
 	if (IS_ENABLED(CONFIG_SAMPLE_UNICAST)) {
 		err = cap_initiator_unicast();
 
 		if (err != 0) {
 			LOG_ERR("Failed to run CAP Initiator as unicast: %d", err);
 		}
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	}
 
 	return 0;

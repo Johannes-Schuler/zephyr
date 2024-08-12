@@ -17,10 +17,7 @@
 #include <zephyr/sys/onoff.h>
 
 #include <hal/nrf_reset.h>
-<<<<<<< HEAD
-=======
 #include <hal/nrf_spu.h>
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 static struct onoff_manager cpunet_mgr;
 
@@ -70,8 +67,6 @@ void nrf53_cpunet_enable(bool on)
 
 	__ASSERT_NO_MSG(ret >= 0);
 }
-<<<<<<< HEAD
-=======
 
 #ifdef CONFIG_SOC_NRF53_CPUNET_ENABLE
 static int nrf53_cpunet_init(void)
@@ -99,4 +94,3 @@ static int nrf53_cpunet_init(void)
 
 SYS_INIT(nrf53_cpunet_init, POST_KERNEL, CONFIG_KERNEL_INIT_PRIORITY_DEVICE);
 #endif /* CONFIG_SOC_NRF53_CPUNET_ENABLE */
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911

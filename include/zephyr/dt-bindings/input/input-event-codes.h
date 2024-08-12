@@ -26,10 +26,7 @@
 #define INPUT_EV_REL 0x02               /**< Relative coordinate event */
 #define INPUT_EV_ABS 0x03               /**< Absolute coordinate event */
 #define INPUT_EV_MSC 0x04               /**< Miscellaneous event */
-<<<<<<< HEAD
-=======
 #define INPUT_EV_DEVICE 0xef            /**< Device specific input event */
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 #define INPUT_EV_VENDOR_START 0xf0      /**< Vendor specific event start */
 #define INPUT_EV_VENDOR_STOP 0xff       /**< Vendor specific event stop */
 /** @} */

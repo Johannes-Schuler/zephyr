@@ -96,8 +96,6 @@
 			st,adc-clock-source = <ASYNC>;
 			st,adc-sequencer = <FULLY_CONFIGURABLE>;
 		};
-<<<<<<< HEAD
-=======
 
 		usbotg_hs: otghs@42040000 {
 			compatible = "st,stm32-otghs";
@@ -118,7 +116,6 @@
 		/* Clock source defined by USBPHYC_SEL in */
 		compatible = "usb-nop-xceiv";
 		#phy-cells = <0>;
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	};
 
 	smbus5: smbus5 {

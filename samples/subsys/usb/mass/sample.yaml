@@ -117,10 +117,7 @@ tests:
         - "The device is put in USB mass storage mode."
   sample.usb.mass_sdhc_fatfs:
     min_ram: 32
-<<<<<<< HEAD
-=======
     filter: dt_compat_enabled("zephyr,sdmmc-disk")
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
     modules:
       - fatfs
     depends_on:
@@ -142,10 +139,7 @@ tests:
         - "The device is put in USB mass storage mode."
   sample.usb_device_next.mass_sdhc_fatfs:
     min_ram: 32
-<<<<<<< HEAD
-=======
     filter: dt_compat_enabled("zephyr,sdmmc-disk")
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
     modules:
       - fatfs
     depends_on:

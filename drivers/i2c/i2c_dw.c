@@ -466,12 +466,6 @@ static void i2c_dw_isr(const struct device *port)
 					slave_cb->write_requested(dw->slave_cfg);
 				}
 			}
-<<<<<<< HEAD
-			data = i2c_dw_read_byte_non_blocking(port);
-			if (slave_cb->write_received) {
-				slave_cb->write_received(dw->slave_cfg, data);
-			}
-=======
 			/* FIFO needs to be drained here so we don't miss the next interrupt */
 			do {
 				data = i2c_dw_read_byte_non_blocking(port);
@@ -479,7 +473,6 @@ static void i2c_dw_isr(const struct device *port)
 					slave_cb->write_received(dw->slave_cfg, data);
 				}
 			} while (test_bit_status_rfne(reg_base));
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		}
 
 		if (intr_stat.bits.rd_req) {
@@ -704,14 +697,6 @@ static int i2c_dw_transfer(const struct device *dev,
 			dw->xfr_flags |= I2C_MSG_RESTART;
 		}
 
-<<<<<<< HEAD
-		/* Send STOP if this is the last message */
-		if (msg_left == 1U) {
-			dw->xfr_flags |= I2C_MSG_STOP;
-		}
-
-=======
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		dw->state &= ~(I2C_DW_CMD_SEND | I2C_DW_CMD_RECV);
 
 		if ((dw->xfr_flags & I2C_MSG_RW_MASK) == I2C_MSG_WRITE) {
@@ -954,12 +939,7 @@ static int i2c_dw_slave_register(const struct device *dev,
 	write_intr_mask(DW_INTR_MASK_RX_FULL |
 			DW_INTR_MASK_RD_REQ |
 			DW_INTR_MASK_TX_ABRT |
-<<<<<<< HEAD
-			DW_INTR_MASK_STOP_DET |
-			DW_INTR_MASK_START_DET, reg_base);
-=======
 			DW_INTR_MASK_STOP_DET, reg_base);
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 	return ret;
 }

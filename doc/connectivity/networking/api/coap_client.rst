@@ -79,8 +79,6 @@ The following is an example of a very simple response handling function:
         }
     }
 
-<<<<<<< HEAD
-=======
 CoAP options may also be added to the request by the application. The following is an example of
 the application adding a Block2 option to the initial request, to suggest a maximum block size to
 the server for a resource that it expects to be large enough to require a blockwise transfer (see
@@ -109,7 +107,6 @@ RFC7959 Figure 3: Block-Wise GET with Early Negotiation).
 
     ret = coap_client_req(&client, sock, &address, &req, -1);
 
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 API Reference
 *************
 

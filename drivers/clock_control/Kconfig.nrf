@@ -57,11 +57,7 @@ endchoice
 config CLOCK_CONTROL_NRF_K32SRC_RC_CALIBRATION
 	bool "LF clock calibration"
 	depends on !SOC_SERIES_NRF91X && CLOCK_CONTROL_NRF_K32SRC_RC
-<<<<<<< HEAD
-	default y if !BOARD_ENABLE_CPUNET
-=======
 	default y if !SOC_NRF53_CPUNET_ENABLE
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	help
 	  If calibration is disabled when RC is used for low frequency clock then
 	  accuracy of the low frequency clock will degrade. Disable on your own

@@ -78,8 +78,6 @@ tests:
       regex:
         - "Ping \\(on channel 16\\)"
         - "Pong \\(on channel 15\\)"
-<<<<<<< HEAD
-=======
 
   sample.drivers.mbox.nrf54l15_no_multithreading:
     platform_allow:
@@ -115,4 +113,3 @@ tests:
       regex:
         - "Ping \\(on channel 16\\)"
         - "Pong \\(on channel 15\\)"
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911

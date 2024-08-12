@@ -145,11 +145,7 @@ static void summarize_dw11(const struct jesd216_param_header *php,
 	       dw11.page_prog_us,
 	       dw11.typ_max_factor * dw11.page_prog_us);
 
-<<<<<<< HEAD
-	printf("Page size: %u By\n", dw11.page_size);
-=======
 	printf("Page program size: %u By\n", dw11.page_size);
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 }
 
 static void summarize_dw12(const struct jesd216_param_header *php,
@@ -342,11 +338,7 @@ int main(void)
 			const struct jesd216_bfp *bfp = (struct jesd216_bfp *)dw;
 
 			dump_bfp(php, bfp);
-<<<<<<< HEAD
-			printf("size = <%u>;\n", (uint32_t)jesd216_bfp_density(bfp));
-=======
 			printf("size = <%u> bits;\n", (uint32_t)jesd216_bfp_density(bfp));
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 			printf("sfdp-bfp =");
 		} else {
 			printf("sfdp-%04x =", id);

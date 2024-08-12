@@ -110,6 +110,8 @@ static int mcux_ccm_on(const struct device *dev,
 	case IMX_CCM_UART1_CLK:
 	case IMX_CCM_UART2_CLK:
 	case IMX_CCM_UART3_CLK:
+		CLOCK_EnableClock(uart_clocks[instance]);
+		return 0;
 	case IMX_CCM_UART4_CLK:
 		CLOCK_EnableClock(uart_clocks[instance]);
 		return 0;

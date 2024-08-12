@@ -297,8 +297,6 @@
 			clocks = <&pcc 0x19c KINETIS_PCC_SRC_FIRC_ASYNC>;
 			status = "disabled";
 		};
-<<<<<<< HEAD
-=======
 
 		cmp0: cmp@40073000 {
 			compatible = "nxp,kinetis-acmp";
@@ -308,7 +306,6 @@
 			status = "disabled";
 			#io-channel-cells = <2>;
 		};
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	};
 };
 

@@ -17,8 +17,5 @@ if(EXISTS ${BOARD_DIR}/CMakeLists.txt)
 
   add_subdirectory(${BOARD_DIR} ${build_dir})
 endif()
-<<<<<<< HEAD
-=======
 
 add_subdirectory(shields)
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911

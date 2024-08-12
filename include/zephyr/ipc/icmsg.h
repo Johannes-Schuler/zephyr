@@ -51,15 +51,10 @@ struct icmsg_data_t {
 
 	/* General */
 	const struct icmsg_config_t *cfg;
-<<<<<<< HEAD
-	struct k_work_delayable notify_work;
-	struct k_work mbox_work;
-=======
 #ifdef CONFIG_MULTITHREADING
 	struct k_work_delayable notify_work;
 	struct k_work mbox_work;
 #endif
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 	atomic_t state;
 };
 

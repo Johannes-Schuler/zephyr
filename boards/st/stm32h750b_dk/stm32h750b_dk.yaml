@@ -14,8 +14,5 @@ supported:
   - dma
   - flash
   - rtc
-<<<<<<< HEAD
-=======
   - memc
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 vendor: st

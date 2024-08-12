@@ -11,10 +11,7 @@ set -ue
 source ${ZEPHYR_BASE}/tests/bsim/compile.source
 
 app=tests/bsim/bluetooth/host/l2cap/many_conns compile
-<<<<<<< HEAD
-=======
 app=tests/bsim/bluetooth/host/l2cap/multilink_peripheral compile
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 app=tests/bsim/bluetooth/host/l2cap/general compile
 app=tests/bsim/bluetooth/host/l2cap/userdata compile
 app=tests/bsim/bluetooth/host/l2cap/stress compile

@@ -12,10 +12,6 @@ This sample enables all sensors of SensorTile.box Pro board, and then
 periodically reads and displays data on the console from the following
 sensors:
 
-<<<<<<< HEAD
-- HTS221: ambient temperature and relative humidity
-=======
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 - LPS22DF: ambient temperature and atmospheric pressure
 - LSM6DSV16X: 6-Axis acceleration and angular velocity
 - LIS2DU12: 3-Axis acceleration
@@ -65,11 +61,6 @@ The sample code outputs sensors data on the SensorTile.box Pro console.
 
     SensorTile.box Pro dashboard
 
-<<<<<<< HEAD
-    HTS221: Temperature: 26.4 C
-    HTS221: Relative Humidity: 60.5%
-=======
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
     LPS22DF: Temperature: 28.4 C
     LPS22DF: Pressure:99.694 kpa
     LSM6DSV16X: Accel (m.s-2): x: -0.158, y: 0.158, z: 9.811

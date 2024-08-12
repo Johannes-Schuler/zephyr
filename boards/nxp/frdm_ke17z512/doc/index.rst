@@ -61,12 +61,8 @@ features:
 +-----------+------------+-------------------------------------+
 | I2C       | on-chip    | I2C                                 |
 +-----------+------------+-------------------------------------+
-<<<<<<< HEAD
-
-=======
 | ACMP      | on-chip    | sensor                              |
 +-----------+------------+-------------------------------------+
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 The default configuration can be found in the defconfig file:
 ``boards/nxp/frdm_ke17z512/frdm_ke17z512_defconfig``.

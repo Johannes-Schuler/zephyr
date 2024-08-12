@@ -3,8 +3,6 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-<<<<<<< HEAD
-=======
 #include <stdint.h>
 
 #include <zephyr/bluetooth/audio/bap.h>
@@ -15,7 +13,6 @@ struct tx_stream {
 	struct bt_cap_stream *stream;
 	uint16_t seq_num;
 };
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 
 /**
  * @brief Run the application as a CAP Initiator for unicast
@@ -26,8 +23,6 @@ struct tx_stream {
  * @return 0 if success, errno on failure.
  */
 int cap_initiator_unicast(void);
-<<<<<<< HEAD
-=======
 
 /**
  * @brief Run the application as a CAP Initiator for broadcast
@@ -67,4 +62,3 @@ int cap_initiator_tx_register_stream(struct bt_cap_stream *cap_stream);
  * @retval -EALREADY if the stream is currently not registered
  */
 int cap_initiator_tx_unregister_stream(struct bt_cap_stream *cap_stream);
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911

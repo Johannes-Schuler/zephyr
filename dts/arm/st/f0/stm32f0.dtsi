@@ -219,10 +219,7 @@
 		iwdg: watchdog@40003000 {
 			compatible = "st,stm32-watchdog";
 			reg = <0x40003000 0x400>;
-<<<<<<< HEAD
-=======
 			status = "disabled";
->>>>>>> 72dd6bb55432e5fd641ac3b93179a1186ed97911
 		};
 
 		wwdg: watchdog@40002c00 {
